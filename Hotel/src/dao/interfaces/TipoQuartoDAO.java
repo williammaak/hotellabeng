@@ -10,5 +10,6 @@ public interface TipoQuartoDAO {
 	public List<TipoQuarto> listarTodosOsTipoQuartos();
 	public void remover(TipoQuarto p);
 	public void atualizar(TipoQuarto c);
+	public TipoQuarto find(int id);
 	
 }

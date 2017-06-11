@@ -86,4 +86,19 @@ public class TipoQuartoDAOImplementation implements TipoQuartoDAO {
 		return list;
 	}
 	
+	@Override
+	public TipoQuarto find(int id){
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		TipoQuarto findObject;
+		
+		try {
+			findObject = (TipoQuarto) session.load(TipoQuarto.class, id);
+		} catch (RuntimeException ex) {
+			throw ex;
+		} finally {
+			session.close();
+		}
+		return findObject;
+	}
 }
