@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
+
+	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="content">
+			<h:form>
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Quarto"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid columns="2">
+					<p:outputLabel value="Número:" />
+					<p:inputText maxlength="11"  size="30" value="#{quartoBean.quarto.numQuarto}"/>
+					
+					<p:outputLabel value="Tipo:" />
+					<p:selectOneMenu value="#{quartoBean.quarto.tipoQuarto.id}" >
+						<f:selectItems value="#{tipoQuartoBean.tipoQuartosComboBox}" var="o" itemLabel="#{o.descTipoQuarto}" itemValue="#{o}" />
+					</p:selectOneMenu>
+					
+					<p:outputLabel value="Metragem:" />
+					<p:inputText maxlength="100" size="30" value="#{quartoBean.quarto.metragem}" />
+					
+					<p:outputLabel value="Descrição:" />
+					<p:inputText maxlength="100" size="30" value="#{quartoBean.quarto.descricao}" />
+					
+					<p:outputLabel value="Valor da diária:" />
+					<p:inputText maxlength="100" size="30" value="#{quartoBean.quarto.vlrDiaria}" />
+				</h:panelGrid>
+				 
+				<h:panelGrid columns="3">
+				 	<p:commandButton value="Cancelar" action="/pages/quarto/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Salvar" actionListener="#{quartoBean.save}" update = ":globalMessage"/>
+				</h:panelGrid>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

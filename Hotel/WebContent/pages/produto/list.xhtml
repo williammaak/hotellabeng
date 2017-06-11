@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
+
+	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="content">
+			<f:event listener="#{clienteBean.fetchAll}" type="preRenderView" />
+						
+			<h:form>
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Cliente"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid columns="4">
+					<p:commandButton value="Novo" action="/pages/cliente/post.xhtml?faces-redirect=true"/>
+				</h:panelGrid>
+				
+				<p:dataTable emptyMessage="Nenhum registro encontrado." value="#{clienteBean.clientes}" var="cliente" rows="10" paginator="true">
+					
+					<p:column headerText="Manutenção">
+						<p:commandButton value="remover" action="#{clienteBean.remover(cliente)}"/>
+						<p:commandButton value="alterar" action="#{clienteBean.alterar(cliente)}"/>
+					</p:column>
+					
+					<p:column headerText="CPF" sortBy="#{cliente.cpf}">
+						<h:outputText value="#{cliente.cpf}" />
+					</p:column>
+					
+					<p:column headerText="RG" sortBy="#{cliente.rg}">
+						<h:outputText value="#{cliente.rg}" />
+					</p:column>
+					
+					<p:column headerText="Nome" sortBy="#{cliente.name}">
+						<h:outputText value="#{cliente.name}" />
+					</p:column>
+					
+					<p:column headerText="Data de nascimento" sortBy="#{cliente.dataNascimento}">
+						<h:outputText value="#{cliente.dataNascimento}">
+							 <f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>

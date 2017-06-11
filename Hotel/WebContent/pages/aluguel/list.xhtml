@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://java.sun.com/jsf/html"
+	  xmlns:f="http://java.sun.com/jsf/core"
+	  xmlns:p="http://primefaces.org/ui"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
+
+	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="content">
+			<f:event listener="#{aluguelBean.fetchAll}" type="preRenderView" />
+						
+			<h:form>
+				<p:toolbar>
+					<f:facet name="left">
+						<h:outputText value="Aluguel"/>
+					</f:facet>
+				</p:toolbar>
+				
+				<h:panelGrid columns="4">
+					<p:commandButton value="Novo" action="/pages/aluguel/post.xhtml?faces-redirect=true"/>
+				</h:panelGrid>
+				
+				<p:dataTable emptyMessage="Nenhum registro encontrado." value="#{aluguelBean.alugueis}" var="aluguel" rows="10" paginator="true">
+					
+					<p:column headerText="Manutenção">
+						<p:commandButton value="remover" action="#{aluguelBean.remover(aluguel)}"/>
+						<p:commandButton value="alterar" action="#{aluguelBean.alterar(aluguel)}"/>
+					</p:column>
+					
+					<p:column headerText="Cliente" sortBy="#{aluguel.cliente.nome}">
+						<h:outputText value="#{aluguel.cliente.nome}" />
+					</p:column>
+					
+					<p:column headerText="Quarto" sortBy="#{aluguel.quarto.numQuarto}">
+						<h:outputText value="#{aluguel.quarto.numQuarto}" />
+					</p:column>
+					
+					<p:column headerText="Data de Check-In" sortBy="#{aluguel.dtCheckIn}">
+						<h:outputText value="#{aluguel.dtCheckIn}">
+							<f:convertDateTime pattern="dd/MM/yyyy"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Qtd. Dias" sortBy="#{aluguel.qtdDias}">
+						<h:outputText value="#{aluguel.qtdDias}" />
+					</p:column>
+					
+					<p:column headerText="Num. Pessoas" sortBy="#{aluguel.qtdPessoas}">
+						<h:outputText value="#{aluguel.qtdPessoas}" />
+					</p:column>
+					
+					<p:column headerText="Café da Manhã?" sortBy="#{aluguel.indCafeDaManha}">
+						<h:outputText value="#{aluguel.indCafeDaManha}" />
+					</p:column>
+				</p:dataTable>
+			</h:form>
+		</ui:define>
+	</ui:composition>
+</html>
