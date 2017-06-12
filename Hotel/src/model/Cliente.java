@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,10 +10,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import controller.BaseEntity;
+
 @Entity
 @Table(name = "cliente")
-public class Cliente {
+public class Cliente implements BaseEntity, Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
@@ -59,5 +67,23 @@ public class Cliente {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return String.valueOf(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		
+		return ((Cliente)obj).getId() == id;
+	}
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	@Override
+	public Long getChaveUnica() {
+		return new Long(id);
 	}
 }

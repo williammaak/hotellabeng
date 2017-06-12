@@ -16,25 +16,42 @@
 				</p:toolbar>
 				
 				<h:panelGrid columns="2">
-				
-					<p:outputLabel value="Cliente" />
-					<p:inputText maxlength="100" size="30" value="#{aluguelBean.aluguel.cliente}" />
 					
-					<p:selectOneMenu value="#{aluguelBean.aluguel.cliente}">
-						<f:selectItem itemLabel="Escolha um cliente"></f:selectItem>
-						<f:selectItems value="#{clienteBean.clientesComboBox}"></f:selectItems>
+					<p:outputLabel value="Cliente:" />
+					<p:selectOneMenu 
+					   value="#{aluguelBean.aluguel.cliente}" 
+					   converter="#{simpleEntityConverterBean}"
+					   required="true"
+					   requiredMessage="Selecione um Cliente">
+						<f:selectItem itemValue="" itemLabel="Selecione um Cliente"/>
+						<f:selectItems value="#{clienteBean.clientes}" var="o" itemLabel="#{o.name}" itemValue="#{o}" />
 					</p:selectOneMenu>
 					
-					<p:selectOneMenu value="#{aluguelBean.aluguel.quarto}">
-						<f:selectItem itemLabel="Escolha um quarto"></f:selectItem>
-						<f:selectItems value="#{quartoBean.quartosComboBox}"></f:selectItems>
+					<p:outputLabel value="Quarto:" />
+					<p:selectOneMenu 
+					   value="#{aluguelBean.aluguel.quarto}" 
+					   converter="#{simpleEntityConverterBean}"
+					   required="true"
+					   requiredMessage="Selecione um Quarto">
+						<f:selectItem itemValue="" itemLabel="Selecione um Quarto"/>
+						<f:selectItems value="#{quartoBean.quartos}" var="o" itemLabel="#{o.numQuarto}" itemValue="#{o}" />
 					</p:selectOneMenu>
+
+					<p:outputLabel value="Data de Check-in" />
+					<p:calendar currentDate="" datePattern="dd/MM/yyyy" value="#{aluguelBean.aluguel.dtCheckIn}" />
+					
+					<p:outputLabel value="Qtd. Dias" />
+					<p:inputText maxlength="100" size="30" value="#{aluguelBean.aluguel.qtdDias}" />
+
+					<p:outputLabel value="Qtd. Pessoas" />
+					<p:inputText maxlength="100" size="30" value="#{aluguelBean.aluguel.qtdPessoas}" />
+
 
 				</h:panelGrid>
 				 
 				<h:panelGrid columns="3">
-				 	<p:commandButton value="Cancelar" action="/pages/client/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{clienteBean.save}" update = ":globalMessage"/>
+				 	<p:commandButton value="Cancelar" action="/pages/aluguel/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Salvar" actionListener="#{aluguelBean.save}" update = ":globalMessage"/>
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

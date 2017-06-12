@@ -1,5 +1,7 @@
 package model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,9 +12,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import controller.BaseEntity;
+
 @Entity
 @Table(name = "quarto")
-public class Quarto {
+public class Quarto implements BaseEntity, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,5 +80,22 @@ public class Quarto {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+	@Override
+	public String toString() {
+		return String.valueOf(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		
+		return ((Quarto)obj).getId() == id;
+	}
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	@Override
+	public Long getChaveUnica() {
+		return new Long(id);
+	}
 }

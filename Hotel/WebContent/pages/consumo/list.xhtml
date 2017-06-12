@@ -8,41 +8,48 @@
 
 	<ui:composition template="/templates/model.xhtml">
 		<ui:define name="content">
-			<f:event listener="#{clienteBean.fetchAll}" type="preRenderView" />
+			<f:event listener="#{consumoBean.fetchAll}" type="preRenderView" />
 						
-			<h:form>
+			<h:form id="formListagem">
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Cliente"/>
+						<h:outputText value="Consumo"/>
 					</f:facet>
 				</p:toolbar>
 				
 				<h:panelGrid columns="4">
-					<p:commandButton value="Novo" action="/pages/cliente/post.xhtml?faces-redirect=true"/>
+					<p:commandButton value="Novo" action="/pages/consumo/post.xhtml?faces-redirect=true"/>
 				</h:panelGrid>
 				
-				<p:dataTable emptyMessage="Nenhum registro encontrado." value="#{clienteBean.clientes}" var="cliente" rows="10" paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{consumoBean.consumos}" var="consumo" rows="10" paginator="true">
 					
-					<p:column headerText="Manutenção">
-						<p:commandButton value="remover" action="#{clienteBean.remover(cliente)}"/>
-						<p:commandButton value="alterar" action="#{clienteBean.alterar(cliente)}"/>
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+						actionListener="#{consumoBean.remover}"
+						update=":globalMessage :formListagem:tabela">
+							<f:attribute name="entitySelecionado" value="#{consumo}"></f:attribute>	
+						</p:commandButton>
 					</p:column>
 					
-					<p:column headerText="CPF" sortBy="#{cliente.cpf}">
-						<h:outputText value="#{cliente.cpf}" />
+					<p:column headerText="ID" sortBy="#{consumo.id}">
+						<h:outputText value="#{consumo.id}" />
 					</p:column>
 					
-					<p:column headerText="RG" sortBy="#{cliente.rg}">
-						<h:outputText value="#{cliente.rg}" />
+					<p:column headerText="Cliente" sortBy="#{consumo.cliente.name}">
+						<h:outputText value="#{consumo.cliente.name}" />
 					</p:column>
 					
-					<p:column headerText="Nome" sortBy="#{cliente.name}">
-						<h:outputText value="#{cliente.name}" />
+					<p:column headerText="Produto" sortBy="#{consumo.produto.nomeProduto}">
+						<h:outputText value="#{consumo.produto.nomeProduto}" />
 					</p:column>
 					
-					<p:column headerText="Data de nascimento" sortBy="#{cliente.dataNascimento}">
-						<h:outputText value="#{cliente.dataNascimento}">
-							 <f:convertDateTime pattern="dd/MM/yyyy"/>
+					<p:column headerText="Quantidade" sortBy="#{consumo.qtdConsumida}">
+						<h:outputText value="#{consumo.qtdConsumida}" />
+					</p:column>
+					
+					<p:column headerText="Data" sortBy="#{consumo.dataHora}">
+						<h:outputText value="#{consumo.dataHora}">
+							 <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss"/>
 						</h:outputText>
 					</p:column>
 				</p:dataTable>

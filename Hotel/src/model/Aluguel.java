@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,9 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import controller.BaseEntity;
+
 @Entity
 @Table(name = "aluguel")
-public class Aluguel {
+public class Aluguel implements BaseEntity, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,9 +45,6 @@ public class Aluguel {
 	
 	@Column(name = "qtdPessoas", nullable = false)
 	private int qtdPessoas;
-	
-	@Column(name = "indCafeDaManha", nullable = false)
-	private boolean indCafeDaManha;
 	
 	public Cliente getCliente() {
 		return cliente;
@@ -71,16 +76,28 @@ public class Aluguel {
 	public void setQtdPessoas(int qtdPessoas) {
 		this.qtdPessoas = qtdPessoas;
 	}
-	public boolean isIndCafeDaManha() {
-		return indCafeDaManha;
-	}
-	public void setIndCafeDaManha(boolean indCafeDaManha) {
-		this.indCafeDaManha = indCafeDaManha;
-	}
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return String.valueOf(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		
+		return ((Aluguel)obj).getId() == id;
+	}
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	@Override
+	public Long getChaveUnica() {
+		return new Long(id);
 	}
 }

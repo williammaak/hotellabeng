@@ -11,27 +11,22 @@
 			<h:form>
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Cliente"/>
+						<h:outputText value="Produto"/>
 					</f:facet>
 				</p:toolbar>
 				
 				<h:panelGrid columns="2">
-					<p:outputLabel value="CPF" />
-					<p:inputText maxlength="11"  size="30" value="#{clienteBean.cliente.cpf}"/>
 					
 					<p:outputLabel value="Nome" />
-					<p:inputText maxlength="100" size="30" value="#{clienteBean.cliente.name}" />
+					<p:inputText maxlength="100" size="30" value="#{produtoBean.produto.nomeProduto}" />
 					
-					<p:outputLabel value="RG" />
-					<p:inputText maxlength="100" size="30" value="#{clienteBean.cliente.rg}" />
-					
-					<p:outputLabel value="Data de Nascimento" />
-					<p:calendar currentDate="" datePattern="dd/MM/yyyy" value="#{clienteBean.cliente.dataNascimento}" />
+					<p:outputLabel value="Valor unitário" />
+					<p:inputText maxlength="100" size="30" value="#{produtoBean.produto.vlrUnitario}" />
 				</h:panelGrid>
 				 
 				<h:panelGrid columns="3">
-				 	<p:commandButton value="Cancelar" action="/pages/client/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{clienteBean.save}" update = ":globalMessage"/>
+				 	<p:commandButton value="Cancelar" action="/pages/produto/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Salvar" actionListener="#{produtoBean.save}" update = ":globalMessage"/>
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

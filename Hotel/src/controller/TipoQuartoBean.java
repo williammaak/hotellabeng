@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.model.SelectItem;
+import javax.faces.event.ActionEvent;
 
 import dao.implementation.TipoQuartoDAOImplementation;
 import dao.interfaces.TipoQuartoDAO;
@@ -20,18 +20,17 @@ public class TipoQuartoBean {
 	private List<TipoQuarto> tipoQuartos = new ArrayList<TipoQuarto>();
 	private TipoQuartoDAO tipoQuartoDAO = new TipoQuartoDAOImplementation();
 		
-	public List<TipoQuarto> getTipoQuartosComboBox(){
-		/*List<SelectItem> list = new ArrayList<SelectItem>();
-		
+	public void remover(ActionEvent evento) {
 		try {
+			TipoQuarto a = (TipoQuarto) evento.getComponent().getAttributes().get("entitySelecionado");
+			tipoQuartoDAO.remover(a);
 			this.fetchAll();
-			for (TipoQuarto c : tipoQuartos) {
-				list.add(new SelectItem(c, c.getDescTipoQuarto()));
-			}
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}*/
+			FacesUtil.addMessageInfo("Quarto removido com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
+		}
+	}
+	public List<TipoQuarto> getTipoQuartosComboBox(){
 		this.fetchAll();
 		return tipoQuartos;
 	}

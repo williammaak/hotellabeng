@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import dao.implementation.QuartoDAOImplementation;
@@ -19,6 +20,17 @@ public class QuartoBean {
 	private Quarto quarto = new Quarto();
 	private List<Quarto> quartos = new ArrayList<Quarto>();
 	private QuartoDAO quartoDAO = new QuartoDAOImplementation();
+	
+	public void remover(ActionEvent evento) {
+		try {
+			Quarto a = (Quarto) evento.getComponent().getAttributes().get("entitySelecionado");
+			quartoDAO.remover(a);
+			this.fetchAll();
+			FacesUtil.addMessageInfo("Quarto removido com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
+		}
+	}
 	
 	public List<SelectItem> getQuartosComboBox(){
 		List<SelectItem> list = new ArrayList<SelectItem>();
@@ -56,6 +68,7 @@ public class QuartoBean {
 	}
 
 	public List<Quarto> getQuartos() {
+		if (quartos == null || quartos.size() == 0) this.fetchAll();
 		return quartos;
 	}
 

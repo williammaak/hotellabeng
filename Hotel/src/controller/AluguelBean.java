@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.event.ActionEvent;
 
 import dao.implementation.AluguelDAOImplementation;
 import dao.interfaces.AluguelDAO;
@@ -19,9 +20,13 @@ public class AluguelBean {
 	private List<Aluguel> alugueis = new ArrayList<Aluguel>();
 	private AluguelDAO aluguelDAO = new AluguelDAOImplementation();
 
+	public void novo(){
+		this.aluguel = new Aluguel();
+	}
+	
 	public void save() {
 		try {
-			getAluguelDAO().inserir(this.getAluguel());
+			aluguelDAO.inserir(aluguel);
 			FacesUtil.addMessageInfo("Aluguel salvo com sucesso");
 		} catch (Exception e) {
 			FacesUtil.addMessageInfo("Não foi possível salvar");
@@ -29,23 +34,22 @@ public class AluguelBean {
 	}
 
 	public void fetchAll() {
-		this.setAlugueis(getAluguelDAO().listarTodosOsAluguels());
+		this.alugueis = aluguelDAO.listarTodosOsAluguels();
 	}
 
-	public String remover(Aluguel c) {
+	public void remover(ActionEvent evento) {
 		try {
-			this.aluguel = c;
-			aluguelDAO.remover(c);
+			Aluguel a = (Aluguel) evento.getComponent().getAttributes().get("entitySelecionado");
+			aluguelDAO.remover(a);
+			this.fetchAll();
 			FacesUtil.addMessageInfo("Aluguel removido com sucesso");
 		} catch (Exception e) {
-			FacesUtil.addMessageInfo("Não foi possível excluir");
+			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
 		}
-		return "list.xhtml";
 	}
 
-	public String alterar(Aluguel c) {
+	public void alterar(Aluguel c) {
 		this.aluguel = c;
-		return "post.xhtml?faces-redirect=true";
 	}
 
 	public List<Aluguel> getAlugueis() {

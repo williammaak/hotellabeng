@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.model.SelectItem;
+import javax.faces.event.ActionEvent;
 
 import dao.implementation.ClienteDAOImplementation;
 import dao.interfaces.ClienteDAO;
@@ -20,19 +20,15 @@ public class ClienteBean {
 	List<Cliente> clientes = new ArrayList<Cliente>();
 	ClienteDAO clienteDAO = new ClienteDAOImplementation();
 	
-	public List<SelectItem> getClientesComboBox(){
-		List<SelectItem> list = new ArrayList<SelectItem>();
-		
+	public void remover(ActionEvent evento) {
 		try {
+			Cliente a = (Cliente) evento.getComponent().getAttributes().get("entitySelecionado");
+			clienteDAO.remover(a);
 			this.fetchAll();
-			for (Cliente c : clientes) {
-				list.add(new SelectItem(c, c.getCpf() + " - " + c.getName()));
-			}
-			
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			FacesUtil.addMessageInfo("Cliente removido com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
 		}
-		return list;
 	}
 	
 	public void save(){
@@ -65,6 +61,7 @@ public class ClienteBean {
 	}
 	
 	public List<Cliente> getClientes() {
+		if (clientes == null || clientes.size() == 0) this.fetchAll();
 		return clientes;
 	}
 

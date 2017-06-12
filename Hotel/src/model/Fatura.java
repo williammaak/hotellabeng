@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,14 +13,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import controller.BaseEntity;
+
 @Entity
 @Table(name = "fatura")
-public class Fatura {
+public class Fatura implements BaseEntity, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id", nullable = false)
-	private long id;
+	private int id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "clienteId", referencedColumnName = "id", nullable = false)
@@ -49,11 +57,28 @@ public class Fatura {
 	public void setVlrTotal(double vlrTotal) {
 		this.vlrTotal = vlrTotal;
 	}
-	public long getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	} 
-	
+	@Override
+	public String toString() {
+		return String.valueOf(id);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		
+		return ((Fatura)obj).getId() == id;
+	}
+	@Override
+	public int hashCode() {
+		return id;
+	}
+	@Override
+	public Long getChaveUnica() {
+		return new Long(id);
+	}
 }

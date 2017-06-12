@@ -11,7 +11,7 @@
 			<h:form>
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Quartoaaa"/>
+						<h:outputText value="Quarto"/>
 					</f:facet>
 				</p:toolbar>
 				
@@ -20,7 +20,12 @@
 					<p:inputText maxlength="11"  size="30" value="#{quartoBean.quarto.numQuarto}"/>
 					
 					<p:outputLabel value="Tipo:" />
-					<p:selectOneMenu value="#{quartoBean.quarto.tipoQuarto}" converter="#{tipoQuartoConverterBean}">
+					<p:selectOneMenu 
+					   value="#{quartoBean.quarto.tipoQuarto}" 
+					   converter="#{simpleEntityConverterBean}"
+					   required="true"
+					   requiredMessage="Selecione um Tipo de Quarto">
+						<f:selectItem itemValue="" itemLabel="Selecione uma Tipo de Quarto"/>
 						<f:selectItems value="#{tipoQuartoBean.tipoQuartosComboBox}" var="o" itemLabel="#{o.descTipoQuarto}" itemValue="#{o}" />
 					</p:selectOneMenu>
 					

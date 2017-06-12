@@ -5,31 +5,31 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui"
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
-
+	  
+<h:body>
 	<ui:composition template="/templates/model.xhtml">
 		<ui:define name="content">
 			<f:event listener="#{aluguelBean.fetchAll}" type="preRenderView" />
 						
-			<h:form>
+			<h:form id="formListagem">
 				<p:toolbar>
 					<f:facet name="left">
 						<h:outputText value="Aluguel"/>
 					</f:facet>
 				</p:toolbar>
 				
-				<h:panelGrid columns="4">
-					<p:commandButton value="Novo" action="/pages/aluguel/post.xhtml?faces-redirect=true"/>
-				</h:panelGrid>
-				
-				<p:dataTable emptyMessage="Nenhum registro encontrado." value="#{aluguelBean.alugueis}" var="aluguel" rows="10" paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{aluguelBean.alugueis}" var="aluguel" rows="10" paginator="true">
 					
-					<p:column headerText="Manutenção">
-						<p:commandButton value="remover" action="#{aluguelBean.remover(aluguel)}"/>
-						<p:commandButton value="alterar" action="#{aluguelBean.alterar(aluguel)}"/>
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+						actionListener="#{aluguelBean.remover}"
+						update=":globalMessage :formListagem:tabela">
+							<f:attribute name="entitySelecionado" value="#{aluguel}"></f:attribute>	
+						</p:commandButton>
 					</p:column>
 					
-					<p:column headerText="Cliente" sortBy="#{aluguel.cliente.nome}">
-						<h:outputText value="#{aluguel.cliente.nome}" />
+					<p:column headerText="Cliente" sortBy="#{aluguel.cliente.name}">
+						<h:outputText value="#{aluguel.cliente.name}" />
 					</p:column>
 					
 					<p:column headerText="Quarto" sortBy="#{aluguel.quarto.numQuarto}">
@@ -50,11 +50,12 @@
 						<h:outputText value="#{aluguel.qtdPessoas}" />
 					</p:column>
 					
-					<p:column headerText="Café da Manhã?" sortBy="#{aluguel.indCafeDaManha}">
-						<h:outputText value="#{aluguel.indCafeDaManha}" />
-					</p:column>
 				</p:dataTable>
 			</h:form>
 		</ui:define>
 	</ui:composition>
+	
+</h:body>
+	
+	
 </html>

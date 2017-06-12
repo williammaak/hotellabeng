@@ -8,42 +8,35 @@
 
 	<ui:composition template="/templates/model.xhtml">
 		<ui:define name="content">
-			<f:event listener="#{clienteBean.fetchAll}" type="preRenderView" />
+			<f:event listener="#{tipoTelefoneBean.fetchAll}" type="preRenderView" />
 						
-			<h:form>
+			<h:form id="formListagem">
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Cliente"/>
+						<h:outputText value="Tipo Telefone"/>
 					</f:facet>
 				</p:toolbar>
 				
 				<h:panelGrid columns="4">
-					<p:commandButton value="Novo" action="/pages/cliente/post.xhtml?faces-redirect=true"/>
+					<p:commandButton value="Novo" action="/pages/tipoTelefone/post.xhtml?faces-redirect=true"/>
 				</h:panelGrid>
 				
-				<p:dataTable emptyMessage="Nenhum registro encontrado." value="#{clienteBean.clientes}" var="cliente" rows="10" paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{tipoTelefoneBean.tipoTelefones}" var="tipoTelefone" rows="10" paginator="true">
 					
-					<p:column headerText="Manutenção">
-						<p:commandButton value="remover" action="#{clienteBean.remover(cliente)}"/>
-						<p:commandButton value="alterar" action="#{clienteBean.alterar(cliente)}"/>
+					<p:column headerText="Opções">
+						<p:commandButton icon="ui-icon-trash"
+						actionListener="#{tipoTelefoneBean.remover}"
+						update=":globalMessage :formListagem:tabela">
+							<f:attribute name="entitySelecionado" value="#{tipoTelefone}"></f:attribute>	
+						</p:commandButton>
 					</p:column>
 					
-					<p:column headerText="CPF" sortBy="#{cliente.cpf}">
-						<h:outputText value="#{cliente.cpf}" />
+					<p:column headerText="ID" sortBy="#{tipoTelefone.id}">
+						<h:outputText value="#{tipoTelefone.id}" />
 					</p:column>
 					
-					<p:column headerText="RG" sortBy="#{cliente.rg}">
-						<h:outputText value="#{cliente.rg}" />
-					</p:column>
-					
-					<p:column headerText="Nome" sortBy="#{cliente.name}">
-						<h:outputText value="#{cliente.name}" />
-					</p:column>
-					
-					<p:column headerText="Data de nascimento" sortBy="#{cliente.dataNascimento}">
-						<h:outputText value="#{cliente.dataNascimento}">
-							 <f:convertDateTime pattern="dd/MM/yyyy"/>
-						</h:outputText>
+					<p:column headerText="Descrição" sortBy="#{tipoTelefone.descTipoTelefone}">
+						<h:outputText value="#{tipoTelefone.descTipoTelefone}" />
 					</p:column>
 				</p:dataTable>
 			</h:form>
