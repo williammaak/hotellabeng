@@ -7,22 +7,31 @@
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
 
 	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:event listener="#{tipoQuartoBean.findOne}" type="preRenderView" />
+			</f:metadata>			
+		</ui:define>
+		
 		<ui:define name="content">
 			<h:form>
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Tipo de Quarto"/>
+						<h:outputText value="#{tipoQuartoBean.action}"/>
 					</f:facet>
 				</p:toolbar>
 				
 				<h:panelGrid columns="2">
+					
 					<p:outputLabel value="Descrição" />
 					<p:inputText maxlength="11"  size="30" value="#{tipoQuartoBean.tipoQuarto.descTipoQuarto}"/>
+
 				</h:panelGrid>
 				 
 				<h:panelGrid columns="3">
-				 	<p:commandButton value="Cancelar" action="/pages/tipoQuarto/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{tipoQuartoBean.save}" update = ":globalMessage"/>
+				 	<p:commandButton value="Cancelar" action="/pages/tipoquarto/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Salvar" actionListener="#{tipoQuartoBean.save}" update=":globalMessage" rendered="#{tipoQuartoBean.action == 'new'}" action="/pages/tipoquarto/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Editar" actionListener="#{tipoQuartoBean.edit}" update=":globalMessage" rendered="#{tipoQuartoBean.action == 'edit'}" action="/pages/tipoquarto/list.xhtml?faces-redirect=true" />
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

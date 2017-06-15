@@ -8,9 +8,9 @@
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
     <property name="hibernate.enable_lazy_load_no_trans">true</property>
     
-    <property name="hibernate.connection.url">jdbc:mysql://br-cdbr-azure-south-b.cloudapp.net:3306/hotellabeng</property>
-    <property name="hibernate.connection.username">bbd79fe804cba2</property>
-    <property name="hibernate.connection.password">77159a98</property>
+    <property name="hibernate.connection.url">jdbc:mysql://sql10.freemysqlhosting.net:3306/sql10180279</property>
+    <property name="hibernate.connection.username">sql10180279</property>
+    <property name="hibernate.connection.password">4pb6ZYBV7A</property>
     <!--  
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hotellabeng</property>
     <property name="hibernate.connection.username">root</property>

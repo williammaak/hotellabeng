@@ -7,15 +7,22 @@
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
 
 	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:event listener="#{quartoBean.findOne}" type="preRenderView" />
+			</f:metadata>			
+		</ui:define>
+		
 		<ui:define name="content">
 			<h:form>
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Quarto"/>
+						<h:outputText value="#{quartoBean.action}"/>
 					</f:facet>
 				</p:toolbar>
 				
 				<h:panelGrid columns="2">
+					
 					<p:outputLabel value="Número:" />
 					<p:inputText maxlength="11"  size="30" value="#{quartoBean.quarto.numQuarto}"/>
 					
@@ -26,7 +33,7 @@
 					   required="true"
 					   requiredMessage="Selecione um Tipo de Quarto">
 						<f:selectItem itemValue="" itemLabel="Selecione uma Tipo de Quarto"/>
-						<f:selectItems value="#{tipoQuartoBean.tipoQuartosComboBox}" var="o" itemLabel="#{o.descTipoQuarto}" itemValue="#{o}" />
+						<f:selectItems value="#{tipoQuartoBean.listTipoQuarto}" var="o" itemLabel="#{o.descTipoQuarto}" itemValue="#{o}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel value="Metragem:" />
@@ -37,11 +44,13 @@
 					
 					<p:outputLabel value="Valor da diária:" />
 					<p:inputText maxlength="100" size="30" value="#{quartoBean.quarto.vlrDiaria}" />
+
 				</h:panelGrid>
 				 
 				<h:panelGrid columns="3">
 				 	<p:commandButton value="Cancelar" action="/pages/quarto/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{quartoBean.save}" update = ":globalMessage"/>
+					<p:commandButton value="Salvar" actionListener="#{quartoBean.save}" update=":globalMessage" rendered="#{quartoBean.action == 'new'}" action="/pages/quarto/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Editar" actionListener="#{quartoBean.edit}" update=":globalMessage" rendered="#{quartoBean.action == 'edit'}" action="/pages/quarto/list.xhtml?faces-redirect=true" />
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

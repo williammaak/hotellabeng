@@ -7,11 +7,17 @@
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
 
 	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:event listener="#{produtoBean.findOne}" type="preRenderView" />
+			</f:metadata>			
+		</ui:define>
+		
 		<ui:define name="content">
 			<h:form>
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Produto"/>
+						<h:outputText value="#{produtoBean.action}"/>
 					</f:facet>
 				</p:toolbar>
 				
@@ -22,11 +28,13 @@
 					
 					<p:outputLabel value="Valor unitário" />
 					<p:inputText maxlength="100" size="30" value="#{produtoBean.produto.vlrUnitario}" />
+
 				</h:panelGrid>
 				 
 				<h:panelGrid columns="3">
 				 	<p:commandButton value="Cancelar" action="/pages/produto/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{produtoBean.save}" update = ":globalMessage"/>
+					<p:commandButton value="Salvar" actionListener="#{produtoBean.save}" update=":globalMessage" rendered="#{produtoBean.action == 'new'}" action="/pages/produto/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Editar" actionListener="#{produtoBean.edit}" update=":globalMessage" rendered="#{produtoBean.action == 'edit'}" action="/pages/produto/list.xhtml?faces-redirect=true" />
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

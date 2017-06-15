@@ -17,31 +17,59 @@ import util.FacesUtil;
 public class ProdutoBean {
 
 	private Produto produto = new Produto();
-	private List<Produto> produtos = new ArrayList<Produto>();
+	private List<Produto> listProduto = new ArrayList<Produto>();
 	private ProdutoDAO produtoDAO = new ProdutoDAOImplementation();
+	private String action;
 	
-	public void remover(ActionEvent evento) {
+	public void save() {
 		try {
-			Produto a = (Produto) evento.getComponent().getAttributes().get("entitySelecionado");
-			produtoDAO.remover(a);
+			produtoDAO.inserir(produto);
+			FacesUtil.addMessageInfo("Produto salvo com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível salvar");
+		}
+	}
+
+	public void fetchAll() {
+		this.setListProduto(produtoDAO.listar());
+	}
+
+	public void delete(ActionEvent evento) {
+		try {
+			Produto entity = (Produto) evento.getComponent().getAttributes().get("entitySelecionado");
+			produtoDAO.remover(entity);
 			this.fetchAll();
 			FacesUtil.addMessageInfo("Produto removido com sucesso");
 		} catch (Exception e) {
 			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
 		}
 	}
-	
-	public void save(){
+
+	public void edit(){
 		try {
-			getProdutoDAO().inserir(this.getProduto());
-			FacesUtil.addMessageInfo("Produto salvo com sucesso");
+			this.produtoDAO.atualizar(produto);
+
+			FacesUtil.addMessageInfo("Alterado com sucesso");
 		} catch (Exception e) {
-			FacesUtil.addMessageInfo("Não foi possível salvar");
+			FacesUtil.addMessageInfo("Não foi possível alterar");
 		}
 	}
 	
-	public void fetchAll(){
-		this.setProdutos(getProdutoDAO().listarTodosOsProdutos());
+	public void findOne(){
+		try {
+			this.action = FacesUtil.getParam("action");
+			
+			if (!"new".equals(this.action)){
+				String id   = FacesUtil.getParam("id");
+
+				if (id != null){
+					this.produto = this.produtoDAO.find(Integer.parseInt(id));	
+				}
+			}
+			
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível carregar!");
+		}
 	}
 
 	public Produto getProduto() {
@@ -52,15 +80,6 @@ public class ProdutoBean {
 		this.produto = produto;
 	}
 
-	public List<Produto> getProdutos() {
-		if (produtos == null || produtos.size() == 0) this.fetchAll();
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
-
 	public ProdutoDAO getProdutoDAO() {
 		return produtoDAO;
 	}
@@ -68,5 +87,25 @@ public class ProdutoBean {
 	public void setProdutoDAO(ProdutoDAO produtoDAO) {
 		this.produtoDAO = produtoDAO;
 	}
-	
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public List<Produto> getListProduto() {
+		if (listProduto == null || listProduto.size() == 0){
+			this.fetchAll();
+		}
+		
+		return listProduto;
+	}
+
+	public void setListProduto(List<Produto> listProduto) {
+		this.listProduto = listProduto;
+	}
+
 }

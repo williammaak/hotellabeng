@@ -1,16 +1,17 @@
 package dao.implementation;
 
 import java.util.List;
-import util.HibernateUtil;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import dao.interfaces.ClienteDAO;
 import model.Cliente;
+import util.HibernateUtil;
 
 public class ClienteDAOImplementation implements ClienteDAO {
-	
+
 	@Override
 	public void inserir(Cliente c) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -70,7 +71,7 @@ public class ClienteDAOImplementation implements ClienteDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Cliente> listarTodosOsClientes() {
+	public List<Cliente> listar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<Cliente> list = null;
 
@@ -85,5 +86,21 @@ public class ClienteDAOImplementation implements ClienteDAO {
 
 		return list;
 	}
-	
+
+	@Override
+	public Cliente find(int id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Cliente findObject;
+		
+		try {
+			findObject = (Cliente) session.get(Cliente.class, id);
+		} catch (RuntimeException ex) {
+			throw ex;
+		} finally {
+			session.close();
+		}
+		return findObject;
+	}
+
 }

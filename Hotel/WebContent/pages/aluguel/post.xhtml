@@ -30,7 +30,7 @@
 					   required="true"
 					   requiredMessage="Selecione um Cliente">
 						<f:selectItem itemValue="" itemLabel="Selecione um Cliente"/>
-						<f:selectItems value="#{clienteBean.clientes}" var="o" itemLabel="#{o.name}" itemValue="#{o}" />
+						<f:selectItems value="#{clienteBean.listCliente}" var="o" itemLabel="#{o.name}" itemValue="#{o}" />
 					</p:selectOneMenu>
 					
 					<p:outputLabel value="Quarto:" />
@@ -40,7 +40,7 @@
 					   required="true"
 					   requiredMessage="Selecione um Quarto">
 						<f:selectItem itemValue="" itemLabel="Selecione um Quarto"/>
-						<f:selectItems value="#{quartoBean.quartos}" var="o" itemLabel="#{o.numQuarto}" itemValue="#{o}" />
+						<f:selectItems value="#{quartoBean.listQuarto}" var="o" itemLabel="#{o.numQuarto}" itemValue="#{o}" />
 					</p:selectOneMenu>
 
 					<p:outputLabel value="Data de Check-in" />
@@ -57,8 +57,8 @@
 				 
 				<h:panelGrid columns="3">
 				 	<p:commandButton value="Cancelar" action="/pages/aluguel/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{aluguelBean.save}" update=":globalMessage" rendered="#{aluguelBean.action == 'new'}" />
-					<p:commandButton value="Editar" actionListener="#{aluguelBean.edit}" update=":globalMessage" rendered="#{aluguelBean.action == 'edit'}" />
+					<p:commandButton value="Salvar" actionListener="#{aluguelBean.save}" update=":globalMessage" rendered="#{aluguelBean.action == 'new'}" action="/pages/aluguel/list.xhtml?faces-redirect=true"/>
+					<p:commandButton value="Editar" actionListener="#{aluguelBean.edit}" update=":globalMessage" rendered="#{aluguelBean.action == 'edit'}" action="/pages/aluguel/list.xhtml?faces-redirect=true"/>
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

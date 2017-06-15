@@ -8,7 +8,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
-import controller.BaseEntity;
+import dao.interfaces.BaseEntity;
 
 @ManagedBean(name = "simpleEntityConverterBean") 
 @FacesConverter(value = "simpleEntityConverter")
@@ -16,9 +16,6 @@ public class SimpleEntityConverter implements Converter {
 
 	public Object getAsObject(FacesContext ctx, UIComponent component, String value) {
 		if (value != null) {
-			System.out.println("passou aqui!");
-			Object values = this.getAttributesFrom(component).get(value);
-			System.out.println("valor: "+ values.toString());
 			return this.getAttributesFrom(component).get(value);
 		}
 		return null;

@@ -16,65 +16,60 @@ import util.FacesUtil;
 @ViewScoped
 public class ClienteBean {
 
-	Cliente cliente = new Cliente();
-	List<Cliente> clientes = new ArrayList<Cliente>();
-	ClienteDAO clienteDAO = new ClienteDAOImplementation();
+	private Cliente cliente = new Cliente();
+	private List<Cliente> listCliente = new ArrayList<Cliente>();
+	private ClienteDAO clienteDAO = new ClienteDAOImplementation();
+	private String action;
 	
-	public void remover(ActionEvent evento) {
+	public void save() {
 		try {
-			Cliente a = (Cliente) evento.getComponent().getAttributes().get("entitySelecionado");
-			clienteDAO.remover(a);
+			clienteDAO.inserir(cliente);
+			FacesUtil.addMessageInfo("Cliente salvo com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível salvar");
+		}
+	}
+
+	public void fetchAll() {
+		this.setListCliente(clienteDAO.listar());
+	}
+
+	public void delete(ActionEvent evento) {
+		try {
+			Cliente entity = (Cliente) evento.getComponent().getAttributes().get("entitySelecionado");
+			clienteDAO.remover(entity);
 			this.fetchAll();
 			FacesUtil.addMessageInfo("Cliente removido com sucesso");
 		} catch (Exception e) {
 			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
 		}
 	}
-	
-	public void save(){
+
+	public void edit(){
 		try {
-			clienteDAO.inserir(this.cliente);
-			FacesUtil.addMessageInfo("Cliente salvo com sucesso");
+			this.clienteDAO.atualizar(cliente);
+
+			FacesUtil.addMessageInfo("Alterado com sucesso");
 		} catch (Exception e) {
-			FacesUtil.addMessageInfo("Não foi possível salvar");
+			FacesUtil.addMessageInfo("Não foi possível alterar");
 		}
 	}
 	
-	public void fetchAll(){
-		this.clientes = clienteDAO.listarTodosOsClientes();
-	}
-	
-	public String remover(Cliente c){
+	public void findOne(){
 		try {
-			this.cliente = c;
-			clienteDAO.remover(c);
-			FacesUtil.addMessageInfo("Cliente removido com sucesso");
-		} catch (Exception e){
-			FacesUtil.addMessageInfo("Não foi possível excluir");
+			this.action = FacesUtil.getParam("action");
+			
+			if (!"new".equals(this.action)){
+				String id   = FacesUtil.getParam("id");
+
+				if (id != null){
+					this.cliente = this.clienteDAO.find(Integer.parseInt(id));	
+				}
+			}
+			
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível carregar!");
 		}
-		return "list.xhtml";
-	}
-	
-	public String alterar(Cliente c) {
-		this.cliente = c;
-		return "post.xhtml?faces-redirect=true";
-	}
-	
-	public List<Cliente> getClientes() {
-		if (clientes == null || clientes.size() == 0) this.fetchAll();
-		return clientes;
-	}
-
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
-	}
-
-	public ClienteDAO getClientDAO() {
-		return clienteDAO;
-	}
-
-	public void setClientDAO(ClienteDAO clienteDAO) {
-		this.clienteDAO = clienteDAO;
 	}
 
 	public Cliente getCliente() {
@@ -84,4 +79,33 @@ public class ClienteBean {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+
+	public ClienteDAO getClienteDAO() {
+		return clienteDAO;
+	}
+
+	public void setClienteDAO(ClienteDAO clienteDAO) {
+		this.clienteDAO = clienteDAO;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public List<Cliente> getListCliente() {
+		if (listCliente == null || listCliente.size() == 0){
+			this.fetchAll();
+		}
+		
+		return listCliente;
+	}
+
+	public void setListCliente(List<Cliente> listCliente) {
+		this.listCliente = listCliente;
+	}
+
 }

@@ -71,7 +71,7 @@ public class AluguelDAOImplementation implements AluguelDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Aluguel> listarTodosOsAluguels() {
+	public List<Aluguel> listar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<Aluguel> list = null;
 
@@ -94,7 +94,7 @@ public class AluguelDAOImplementation implements AluguelDAO {
 		Aluguel findObject;
 		
 		try {
-			findObject = (Aluguel) session.load(Aluguel.class, id);
+			findObject = (Aluguel) session.get(Aluguel.class, id);
 		} catch (RuntimeException ex) {
 			throw ex;
 		} finally {
@@ -102,6 +102,5 @@ public class AluguelDAOImplementation implements AluguelDAO {
 		}
 		return findObject;
 	}
-
 
 }

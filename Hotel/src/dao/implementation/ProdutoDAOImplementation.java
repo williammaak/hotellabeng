@@ -1,16 +1,17 @@
 package dao.implementation;
 
 import java.util.List;
-import util.HibernateUtil;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import dao.interfaces.ProdutoDAO;
 import model.Produto;
+import util.HibernateUtil;
 
 public class ProdutoDAOImplementation implements ProdutoDAO {
-	
+
 	@Override
 	public void inserir(Produto c) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -70,7 +71,7 @@ public class ProdutoDAOImplementation implements ProdutoDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Produto> listarTodosOsProdutos() {
+	public List<Produto> listar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<Produto> list = null;
 
@@ -85,5 +86,21 @@ public class ProdutoDAOImplementation implements ProdutoDAO {
 
 		return list;
 	}
-	
+
+	@Override
+	public Produto find(int id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Produto findObject;
+		
+		try {
+			findObject = (Produto) session.get(Produto.class, id);
+		} catch (RuntimeException ex) {
+			throw ex;
+		} finally {
+			session.close();
+		}
+		return findObject;
+	}
+
 }

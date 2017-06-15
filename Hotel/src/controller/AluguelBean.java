@@ -17,7 +17,7 @@ import util.FacesUtil;
 public class AluguelBean {
 
 	private Aluguel aluguel = new Aluguel();
-	private List<Aluguel> alugueis = new ArrayList<Aluguel>();
+	private List<Aluguel> listAluguel = new ArrayList<Aluguel>();
 	private AluguelDAO aluguelDAO = new AluguelDAOImplementation();
 	private String action;
 	
@@ -31,22 +31,13 @@ public class AluguelBean {
 	}
 
 	public void fetchAll() {
-		this.alugueis = aluguelDAO.listarTodosOsAluguels();
-		
-		for (Aluguel a : alugueis) {
-			if (a.getCliente() == null) {
-				System.out.println("o cliente é nulo");
-			}
-			else {
-				System.out.println(a.getCliente().getId());
-			}
-		}
+		this.setListAluguel(aluguelDAO.listar());
 	}
 
-	public void remover(ActionEvent evento) {
+	public void delete(ActionEvent evento) {
 		try {
-			Aluguel a = (Aluguel) evento.getComponent().getAttributes().get("entitySelecionado");
-			aluguelDAO.remover(a);
+			Aluguel entity = (Aluguel) evento.getComponent().getAttributes().get("entitySelecionado");
+			aluguelDAO.remover(entity);
 			this.fetchAll();
 			FacesUtil.addMessageInfo("Aluguel removido com sucesso");
 		} catch (Exception e) {
@@ -67,25 +58,18 @@ public class AluguelBean {
 	public void findOne(){
 		try {
 			this.action = FacesUtil.getParam("action");
-			String id   = FacesUtil.getParam("id");
+			
+			if (!"new".equals(this.action)){
+				String id   = FacesUtil.getParam("id");
 
-			System.out.println("AQUI!!!!!!!!!");
-			if (id != null){
-				this.aluguel = this.aluguelDAO.find(Integer.parseInt(id));	
+				if (id != null){
+					this.aluguel = this.aluguelDAO.find(Integer.parseInt(id));	
+				}
 			}
 			
-			System.out.println("ID CLIENTE" + this.aluguel.getCliente().getId());
 		} catch (Exception e) {
 			FacesUtil.addMessageInfo("Não foi possível carregar!");
 		}
-	}
-
-	public List<Aluguel> getAlugueis() {
-		return alugueis;
-	}
-
-	public void setAlugueis(List<Aluguel> alugueis) {
-		this.alugueis = alugueis;
 	}
 
 	public Aluguel getAluguel() {
@@ -110,6 +94,18 @@ public class AluguelBean {
 
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	public List<Aluguel> getListAluguel() {
+		if (listAluguel == null || listAluguel.size() == 0){
+			this.fetchAll();
+		}
+		
+		return listAluguel;
+	}
+
+	public void setListAluguel(List<Aluguel> listAluguel) {
+		this.listAluguel = listAluguel;
 	}
 
 }

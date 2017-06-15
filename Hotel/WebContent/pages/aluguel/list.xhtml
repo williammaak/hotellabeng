@@ -18,21 +18,18 @@
 					</f:facet>
 				</p:toolbar>
 				
-				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{aluguelBean.alugueis}" var="aluguel" rows="10" paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{aluguelBean.listAluguel}" var="aluguel" rows="10" paginator="true">
 					
 					<p:column headerText="Opções">
-						<p:commandButton icon="ui-icon-trash"
-						actionListener="#{aluguelBean.remover}"
-						update=":globalMessage :formListagem:tabela">
-							<f:attribute name="entitySelecionado" value="#{aluguel}"></f:attribute>	
-						</p:commandButton>
-					</p:column>
-					
-					<p:column>
 						<p:button value="Editar" outcome="/pages/aluguel/post.xhtml">
 							<f:param name="id" value="#{aluguel.id}" />
 							<f:param name="action" value="edit" />
 						</p:button>
+						<p:commandButton icon="ui-icon-trash"
+						actionListener="#{aluguelBean.delete}"
+						update=":globalMessage :formListagem:tabela">
+							<f:attribute name="entitySelecionado" value="#{aluguel}"></f:attribute>	
+						</p:commandButton>
 					</p:column>
 					
 					<p:column headerText="Cliente" sortBy="#{aluguel.cliente.name}">
@@ -63,6 +60,5 @@
 	</ui:composition>
 	
 </h:body>
-	
 	
 </html>

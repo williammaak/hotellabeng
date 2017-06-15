@@ -17,51 +17,59 @@ import util.FacesUtil;
 public class TipoQuartoBean {
 
 	private TipoQuarto tipoQuarto = new TipoQuarto();
-	private List<TipoQuarto> tipoQuartos = new ArrayList<TipoQuarto>();
+	private List<TipoQuarto> listTipoQuarto = new ArrayList<TipoQuarto>();
 	private TipoQuartoDAO tipoQuartoDAO = new TipoQuartoDAOImplementation();
-		
-	public void remover(ActionEvent evento) {
-		try {
-			TipoQuarto a = (TipoQuarto) evento.getComponent().getAttributes().get("entitySelecionado");
-			tipoQuartoDAO.remover(a);
-			this.fetchAll();
-			FacesUtil.addMessageInfo("Quarto removido com sucesso");
-		} catch (Exception e) {
-			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
-		}
-	}
-	public List<TipoQuarto> getTipoQuartosComboBox(){
-		this.fetchAll();
-		return tipoQuartos;
-	}
+	private String action;
 	
-	public String remover(TipoQuarto c){
+	public void save() {
 		try {
-			this.tipoQuarto = c;
-			tipoQuartoDAO.remover(c);
-			FacesUtil.addMessageInfo("TipoQuarto removido com sucesso");
-		} catch (Exception e){
-			FacesUtil.addMessageInfo("Não foi possível excluir");
-		}
-		return "list.xhtml";
-	}
-	
-	public String alterar(TipoQuarto c) {
-		this.tipoQuarto = c;
-		return "post.xhtml?faces-redirect=true";
-	}
-	
-	public void save(){
-		try {
-			getTipoQuartoDAO().inserir(this.getTipoQuarto());
-			FacesUtil.addMessageInfo("TipoQuarto salvo com sucesso");
+			tipoQuartoDAO.inserir(tipoQuarto);
+			FacesUtil.addMessageInfo("Tipo de Quarto salvo com sucesso");
 		} catch (Exception e) {
 			FacesUtil.addMessageInfo("Não foi possível salvar");
 		}
 	}
+
+	public void fetchAll() {
+		this.setListTipoQuarto(tipoQuartoDAO.listar());
+	}
+
+	public void delete(ActionEvent evento) {
+		try {
+			TipoQuarto entity = (TipoQuarto) evento.getComponent().getAttributes().get("entitySelecionado");
+			tipoQuartoDAO.remover(entity);
+			this.fetchAll();
+			FacesUtil.addMessageInfo("Tipo de Quarto removido com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
+		}
+	}
+
+	public void edit(){
+		try {
+			this.tipoQuartoDAO.atualizar(tipoQuarto);
+
+			FacesUtil.addMessageInfo("Alterado com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível alterar");
+		}
+	}
 	
-	public void fetchAll(){
-		this.setTipoQuartos(getTipoQuartoDAO().listarTodosOsTipoQuartos());
+	public void findOne(){
+		try {
+			this.action = FacesUtil.getParam("action");
+			
+			if (!"new".equals(this.action)){
+				String id   = FacesUtil.getParam("id");
+
+				if (id != null){
+					this.tipoQuarto = this.tipoQuartoDAO.find(Integer.parseInt(id));	
+				}
+			}
+			
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível carregar!");
+		}
 	}
 
 	public TipoQuarto getTipoQuarto() {
@@ -72,14 +80,6 @@ public class TipoQuartoBean {
 		this.tipoQuarto = tipoQuarto;
 	}
 
-	public List<TipoQuarto> getTipoQuartos() {
-		return tipoQuartos;
-	}
-
-	public void setTipoQuartos(List<TipoQuarto> tipoQuartos) {
-		this.tipoQuartos = tipoQuartos;
-	}
-
 	public TipoQuartoDAO getTipoQuartoDAO() {
 		return tipoQuartoDAO;
 	}
@@ -87,5 +87,25 @@ public class TipoQuartoBean {
 	public void setTipoQuartoDAO(TipoQuartoDAO tipoQuartoDAO) {
 		this.tipoQuartoDAO = tipoQuartoDAO;
 	}
-	
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public List<TipoQuarto> getListTipoQuarto() {
+		if (listTipoQuarto == null || listTipoQuarto.size() == 0){
+			this.fetchAll();
+		}
+		
+		return listTipoQuarto;
+	}
+
+	public void setListTipoQuarto(List<TipoQuarto> listTipoQuarto) {
+		this.listTipoQuarto = listTipoQuarto;
+	}
+
 }

@@ -7,15 +7,22 @@
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
 
 	<ui:composition template="/templates/model.xhtml">
+		<ui:define name="metadata">
+			<f:metadata>
+				<f:event listener="#{clienteBean.findOne}" type="preRenderView" />
+			</f:metadata>			
+		</ui:define>
+		
 		<ui:define name="content">
 			<h:form>
 				<p:toolbar>
 					<f:facet name="left">
-						<h:outputText value="Cliente"/>
+						<h:outputText value="#{clienteBean.action}"/>
 					</f:facet>
 				</p:toolbar>
 				
 				<h:panelGrid columns="2">
+					
 					<p:outputLabel value="CPF" />
 					<p:inputText maxlength="11"  size="30" value="#{clienteBean.cliente.cpf}"/>
 					
@@ -27,11 +34,13 @@
 					
 					<p:outputLabel value="Data de Nascimento" />
 					<p:calendar currentDate="" datePattern="dd/MM/yyyy" value="#{clienteBean.cliente.dataNascimento}" />
+
 				</h:panelGrid>
 				 
 				<h:panelGrid columns="3">
-				 	<p:commandButton value="Cancelar" action="/pages/client/list.xhtml?faces-redirect=true" />
-					<p:commandButton value="Salvar" actionListener="#{clienteBean.save}" update = ":globalMessage"/>
+				 	<p:commandButton value="Cancelar" action="/pages/cliente/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Salvar" actionListener="#{clienteBean.save}" update=":globalMessage" rendered="#{clienteBean.action == 'new'}" action="/pages/cliente/list.xhtml?faces-redirect=true" />
+					<p:commandButton value="Editar" actionListener="#{clienteBean.edit}" update=":globalMessage" rendered="#{clienteBean.action == 'edit'}" action="/pages/cliente/list.xhtml?faces-redirect=true" />
 				</h:panelGrid>
 			</h:form>
 		</ui:define>

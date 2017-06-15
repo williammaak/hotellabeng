@@ -5,7 +5,8 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui"
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
-
+	  
+<h:body>
 	<ui:composition template="/templates/model.xhtml">
 		<ui:define name="content">
 			<f:event listener="#{produtoBean.fetchAll}" type="preRenderView" />
@@ -17,15 +18,15 @@
 					</f:facet>
 				</p:toolbar>
 				
-				<h:panelGrid columns="4">
-					<p:commandButton value="Novo" action="/pages/produto/post.xhtml?faces-redirect=true"/>
-				</h:panelGrid>
-				
-				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{produtoBean.produtos}" var="produto" rows="10" paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{produtoBean.listProduto}" var="produto" rows="10" paginator="true">
 					
 					<p:column headerText="Opções">
+						<p:button value="Editar" outcome="/pages/produto/post.xhtml">
+							<f:param name="id" value="#{produto.id}" />
+							<f:param name="action" value="edit" />
+						</p:button>
 						<p:commandButton icon="ui-icon-trash"
-						actionListener="#{produtoBean.remover}"
+						actionListener="#{produtoBean.delete}"
 						update=":globalMessage :formListagem:tabela">
 							<f:attribute name="entitySelecionado" value="#{produto}"></f:attribute>	
 						</p:commandButton>
@@ -42,8 +43,12 @@
 					<p:column headerText="Valor unitário" sortBy="#{produto.vlrUnitario}">
 						<h:outputText value="#{produto.vlrUnitario}" />
 					</p:column>
+					
 				</p:dataTable>
 			</h:form>
 		</ui:define>
 	</ui:composition>
+	
+</h:body>
+	
 </html>

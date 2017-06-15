@@ -17,31 +17,59 @@ import util.FacesUtil;
 public class ConsumoBean {
 
 	private Consumo consumo = new Consumo();
-	private List<Consumo> consumos = new ArrayList<Consumo>();
+	private List<Consumo> listConsumo = new ArrayList<Consumo>();
 	private ConsumoDAO consumoDAO = new ConsumoDAOImplementation();
+	private String action;
 	
-	public void remover(ActionEvent evento) {
+	public void save() {
 		try {
-			Consumo a = (Consumo) evento.getComponent().getAttributes().get("entitySelecionado");
-			consumoDAO.remover(a);
+			consumoDAO.inserir(consumo);
+			FacesUtil.addMessageInfo("Consumo salvo com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível salvar");
+		}
+	}
+
+	public void fetchAll() {
+		this.setListConsumo(consumoDAO.listar());
+	}
+
+	public void delete(ActionEvent evento) {
+		try {
+			Consumo entity = (Consumo) evento.getComponent().getAttributes().get("entitySelecionado");
+			consumoDAO.remover(entity);
 			this.fetchAll();
 			FacesUtil.addMessageInfo("Consumo removido com sucesso");
 		} catch (Exception e) {
 			FacesUtil.addMessageInfo("Não foi possível excluir; " + e.toString());
 		}
 	}
-	
-	public void save(){
+
+	public void edit(){
 		try {
-			getConsumoDAO().inserir(this.getConsumo());
-			FacesUtil.addMessageInfo("Consumo salvo com sucesso");
+			this.consumoDAO.atualizar(consumo);
+
+			FacesUtil.addMessageInfo("Alterado com sucesso");
 		} catch (Exception e) {
-			FacesUtil.addMessageInfo("Não foi possível salvar");
+			FacesUtil.addMessageInfo("Não foi possível alterar");
 		}
 	}
 	
-	public void fetchAll(){
-		this.setConsumos(getConsumoDAO().listarTodosOsConsumos());
+	public void findOne(){
+		try {
+			this.action = FacesUtil.getParam("action");
+			
+			if (!"new".equals(this.action)){
+				String id   = FacesUtil.getParam("id");
+
+				if (id != null){
+					this.consumo = this.consumoDAO.find(Integer.parseInt(id));	
+				}
+			}
+			
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível carregar!");
+		}
 	}
 
 	public Consumo getConsumo() {
@@ -52,14 +80,6 @@ public class ConsumoBean {
 		this.consumo = consumo;
 	}
 
-	public List<Consumo> getConsumos() {
-		return consumos;
-	}
-
-	public void setConsumos(List<Consumo> consumos) {
-		this.consumos = consumos;
-	}
-
 	public ConsumoDAO getConsumoDAO() {
 		return consumoDAO;
 	}
@@ -67,5 +87,25 @@ public class ConsumoBean {
 	public void setConsumoDAO(ConsumoDAO consumoDAO) {
 		this.consumoDAO = consumoDAO;
 	}
-	
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public List<Consumo> getListConsumo() {
+		if (listConsumo == null || listConsumo.size() == 0){
+			this.fetchAll();
+		}
+		
+		return listConsumo;
+	}
+
+	public void setListConsumo(List<Consumo> listConsumo) {
+		this.listConsumo = listConsumo;
+	}
+
 }

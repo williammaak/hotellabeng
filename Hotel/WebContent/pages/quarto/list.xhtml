@@ -5,7 +5,8 @@
 	  xmlns:f="http://java.sun.com/jsf/core"
 	  xmlns:p="http://primefaces.org/ui"
 	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">	
-
+	  
+<h:body>
 	<ui:composition template="/templates/model.xhtml">
 		<ui:define name="content">
 			<f:event listener="#{quartoBean.fetchAll}" type="preRenderView" />
@@ -17,15 +18,15 @@
 					</f:facet>
 				</p:toolbar>
 				
-				<h:panelGrid columns="4">
-					<p:commandButton value="Novo" action="/pages/quarto/post.xhtml?faces-redirect=true"/>
-				</h:panelGrid>
-				
-				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{quartoBean.quartos}" var="quarto" rows="10" paginator="true">
+				<p:dataTable id="tabela" emptyMessage="Nenhum registro encontrado." value="#{quartoBean.listQuarto}" var="quarto" rows="10" paginator="true">
 					
 					<p:column headerText="Opções">
+						<p:button value="Editar" outcome="/pages/quarto/post.xhtml">
+							<f:param name="id" value="#{quarto.id}" />
+							<f:param name="action" value="edit" />
+						</p:button>
 						<p:commandButton icon="ui-icon-trash"
-						actionListener="#{quartoBean.remover}"
+						actionListener="#{quartoBean.delete}"
 						update=":globalMessage :formListagem:tabela">
 							<f:attribute name="entitySelecionado" value="#{quarto}"></f:attribute>	
 						</p:commandButton>
@@ -47,11 +48,15 @@
 						<h:outputText value="#{quarto.tipoQuarto.descTipoQuarto}" />
 					</p:column>
 					
-					<p:column headerText="Vlr" sortBy="#{quarto.vlrDiaria}">
+					<p:column headerText="Valor Diária" sortBy="#{quarto.vlrDiaria}">
 						<h:outputText value="#{quarto.vlrDiaria}" />
 					</p:column>
+					
 				</p:dataTable>
 			</h:form>
 		</ui:define>
 	</ui:composition>
+	
+</h:body>
+	
 </html>

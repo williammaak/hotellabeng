@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import controller.BaseEntity;
+import dao.interfaces.BaseEntity;
 
 @Entity
 @Table(name = "quarto")

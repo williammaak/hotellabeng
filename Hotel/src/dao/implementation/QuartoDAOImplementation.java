@@ -1,16 +1,17 @@
 package dao.implementation;
 
 import java.util.List;
-import util.HibernateUtil;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import dao.interfaces.QuartoDAO;
 import model.Quarto;
+import util.HibernateUtil;
 
 public class QuartoDAOImplementation implements QuartoDAO {
-	
+
 	@Override
 	public void inserir(Quarto c) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -70,7 +71,7 @@ public class QuartoDAOImplementation implements QuartoDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Quarto> listarTodosOsQuartos() {
+	public List<Quarto> listar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<Quarto> list = null;
 
@@ -85,5 +86,21 @@ public class QuartoDAOImplementation implements QuartoDAO {
 
 		return list;
 	}
-	
+
+	@Override
+	public Quarto find(int id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Quarto findObject;
+		
+		try {
+			findObject = (Quarto) session.get(Quarto.class, id);
+		} catch (RuntimeException ex) {
+			throw ex;
+		} finally {
+			session.close();
+		}
+		return findObject;
+	}
+
 }

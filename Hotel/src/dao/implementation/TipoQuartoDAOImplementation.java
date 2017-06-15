@@ -1,16 +1,17 @@
 package dao.implementation;
 
 import java.util.List;
-import util.HibernateUtil;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import dao.interfaces.TipoQuartoDAO;
 import model.TipoQuarto;
+import util.HibernateUtil;
 
 public class TipoQuartoDAOImplementation implements TipoQuartoDAO {
-	
+
 	@Override
 	public void inserir(TipoQuarto c) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -70,7 +71,7 @@ public class TipoQuartoDAOImplementation implements TipoQuartoDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<TipoQuarto> listarTodosOsTipoQuartos() {
+	public List<TipoQuarto> listar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<TipoQuarto> list = null;
 
@@ -85,15 +86,15 @@ public class TipoQuartoDAOImplementation implements TipoQuartoDAO {
 
 		return list;
 	}
-	
+
 	@Override
-	public TipoQuarto find(int id){
+	public TipoQuarto find(int id) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		TipoQuarto findObject;
 		
 		try {
-			findObject = (TipoQuarto) session.load(TipoQuarto.class, id);
+			findObject = (TipoQuarto) session.get(TipoQuarto.class, id);
 		} catch (RuntimeException ex) {
 			throw ex;
 		} finally {
@@ -101,4 +102,5 @@ public class TipoQuartoDAOImplementation implements TipoQuartoDAO {
 		}
 		return findObject;
 	}
+
 }

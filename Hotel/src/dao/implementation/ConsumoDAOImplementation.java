@@ -1,16 +1,17 @@
 package dao.implementation;
 
 import java.util.List;
-import util.HibernateUtil;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import dao.interfaces.ConsumoDAO;
 import model.Consumo;
+import util.HibernateUtil;
 
 public class ConsumoDAOImplementation implements ConsumoDAO {
-	
+
 	@Override
 	public void inserir(Consumo c) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -70,7 +71,7 @@ public class ConsumoDAOImplementation implements ConsumoDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Consumo> listarTodosOsConsumos() {
+	public List<Consumo> listar() {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List<Consumo> list = null;
 
@@ -85,5 +86,21 @@ public class ConsumoDAOImplementation implements ConsumoDAO {
 
 		return list;
 	}
-	
+
+	@Override
+	public Consumo find(int id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Consumo findObject;
+		
+		try {
+			findObject = (Consumo) session.get(Consumo.class, id);
+		} catch (RuntimeException ex) {
+			throw ex;
+		} finally {
+			session.close();
+		}
+		return findObject;
+	}
+
 }
