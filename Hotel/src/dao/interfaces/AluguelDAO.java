@@ -10,5 +10,6 @@ public interface AluguelDAO {
 	public List<Aluguel> listarTodosOsAluguels();
 	public void remover(Aluguel p);
 	public void atualizar(Aluguel c);
+	public Aluguel find(int id);
 	
 }

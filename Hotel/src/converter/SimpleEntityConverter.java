@@ -16,6 +16,9 @@ public class SimpleEntityConverter implements Converter {
 
 	public Object getAsObject(FacesContext ctx, UIComponent component, String value) {
 		if (value != null) {
+			System.out.println("passou aqui!");
+			Object values = this.getAttributesFrom(component).get(value);
+			System.out.println("valor: "+ values.toString());
 			return this.getAttributesFrom(component).get(value);
 		}
 		return null;

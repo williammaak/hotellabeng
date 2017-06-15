@@ -28,6 +28,13 @@
 						</p:commandButton>
 					</p:column>
 					
+					<p:column>
+						<p:button value="Editar" outcome="/pages/aluguel/post.xhtml">
+							<f:param name="id" value="#{aluguel.id}" />
+							<f:param name="action" value="edit" />
+						</p:button>
+					</p:column>
+					
 					<p:column headerText="Cliente" sortBy="#{aluguel.cliente.name}">
 						<h:outputText value="#{aluguel.cliente.name}" />
 					</p:column>

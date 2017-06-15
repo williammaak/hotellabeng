@@ -19,10 +19,7 @@ public class AluguelBean {
 	private Aluguel aluguel = new Aluguel();
 	private List<Aluguel> alugueis = new ArrayList<Aluguel>();
 	private AluguelDAO aluguelDAO = new AluguelDAOImplementation();
-
-	public void novo(){
-		this.aluguel = new Aluguel();
-	}
+	private String action;
 	
 	public void save() {
 		try {
@@ -35,6 +32,15 @@ public class AluguelBean {
 
 	public void fetchAll() {
 		this.alugueis = aluguelDAO.listarTodosOsAluguels();
+		
+		for (Aluguel a : alugueis) {
+			if (a.getCliente() == null) {
+				System.out.println("o cliente é nulo");
+			}
+			else {
+				System.out.println(a.getCliente().getId());
+			}
+		}
 	}
 
 	public void remover(ActionEvent evento) {
@@ -48,8 +54,30 @@ public class AluguelBean {
 		}
 	}
 
-	public void alterar(Aluguel c) {
-		this.aluguel = c;
+	public void edit(){
+		try {
+			this.aluguelDAO.atualizar(aluguel);
+
+			FacesUtil.addMessageInfo("Alterado com sucesso");
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível alterar");
+		}
+	}
+	
+	public void findOne(){
+		try {
+			this.action = FacesUtil.getParam("action");
+			String id   = FacesUtil.getParam("id");
+
+			System.out.println("AQUI!!!!!!!!!");
+			if (id != null){
+				this.aluguel = this.aluguelDAO.find(Integer.parseInt(id));	
+			}
+			
+			System.out.println("ID CLIENTE" + this.aluguel.getCliente().getId());
+		} catch (Exception e) {
+			FacesUtil.addMessageInfo("Não foi possível carregar!");
+		}
 	}
 
 	public List<Aluguel> getAlugueis() {
@@ -74,6 +102,14 @@ public class AluguelBean {
 
 	public void setAluguelDAO(AluguelDAO aluguelDAO) {
 		this.aluguelDAO = aluguelDAO;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
 	}
 
 }

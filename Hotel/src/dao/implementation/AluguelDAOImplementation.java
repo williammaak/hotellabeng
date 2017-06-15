@@ -87,5 +87,21 @@ public class AluguelDAOImplementation implements AluguelDAO {
 		return list;
 	}
 
+	@Override
+	public Aluguel find(int id) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		Aluguel findObject;
+		
+		try {
+			findObject = (Aluguel) session.load(Aluguel.class, id);
+		} catch (RuntimeException ex) {
+			throw ex;
+		} finally {
+			session.close();
+		}
+		return findObject;
+	}
+
 
 }
